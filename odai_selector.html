@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>胡乱文芸部お題セレクター</title>
+  <style>
+* {
+  font-size: medium;
+}
+
+h1 {
+  margin-left: 1em;
+  font-size: large;
+}
+
+h2 {
+  margin-left: 1em;
+}
+
+ul{
+  list-style: none;
+  padding: 4px;
+}
+
+li {
+  padding: 4px;
+  line-height: 1.5em;
+  border-bottom: dashed 1px steelblue;
+}
+
+li:last-of-type {
+  border: none;
+}
+
+.strong{
+  font-weight: bold;
+}
+
+#main {
+  margin-bottom: 3.5em;
+}
+
+#point_num {
+  margin: 4px 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+#btn {
+  margin: 0 auto;
+}
+
+#list {
+  border-top: solid slategray 1px;
+  border-bottom: solid slategray 1px;
+  margin: 2px;
+  margin-block-start: 3em;
+  margin-block-end: 3em;
+  text-align: center;
+}
+
+div#selected {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  text-align: center;
+  font-size: larger;
+  font-weight: bolder;
+  position: relative;
+  padding: 0.25em 1em;
+}
+
+div#selected::before, div#selected::after {
+  content: '';
+  width: 20px;
+  height: 30px;
+  position: absolute;
+  display: inline-block;
+}
+
+div#selected::before{
+  border-left: solid 2px #5767bf;
+  border-top: solid 2px #5767bf;
+  top: 0;
+  left: 0;
+}
+
+div#selected::after {
+  border-right: solid 2px #5767bf;
+  border-bottom: solid 2px #5767bf;
+  bottom: 0;
+  right: 0;
+}
+
+div#selected ol li {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+div ol{
+  margin: 0 auto;
+  list-style: none;
+  padding: unset;
+}
+
+#container_ctrl {
+  display: flex;
+  flex-direction: column;
+}
+
+#container_view {
+  display: flex;
+  flex-direction: column;
+}
+
+#stores {
+  border-top: double 1px steelblue;
+  border-bottom: double 1px steelblue;
+  min-height: 3em;
+  background: aliceblue;
+  padding-bottom: 1.5em;
+}
+
+#stores::before {
+  content: "お題履歴";
+  font-size: larger;
+  position: relative;
+  bottom: 1.5em;
+  left: 1em;
+  background: steelblue;
+  color: white;
+  padding: 0 10px;
+  font-weight: lighter;
+}
+
+.storecard {
+  border: dashed 1px black;
+  margin: 1em;
+  text-align: center;
+}
+
+div.storecard ol li{
+  padding: 4px 2px;
+  background-color: white;
+}
+
+@media screen and (min-width: 700px), screen and (orientation: landscape) {
+  h1 {
+    font-size: x-large;
+  }
+  div#selected {
+    font-size: x-large;
+  }
+  #container_ctrl {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 0 auto;
+      width: 100%;
+  }
+  #btn{
+    margin: 0;
+  }
+  #container_view {
+    margin-block-start: 2em;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  #container_hasselect{
+    width: 60%;
+    margin-right: 1em;
+    margin-left: 3em;
+  }
+  #list{
+    border-top: 0;
+    border-bottom: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    width: 40%;
+    margin-right: 1.5em;
+    margin-left: 1.5em;
+  }
+  #point_num{
+    flex-direction: row;
+  }
+}
+
+  </style>
+  <script>
+
+  let selected_flag = false;
+
+  window.onload = function () {
+    const ul = document.getElementById("themelist");
+    //お題リストを動的に作成
+    for (let elm of themes) {
+      let li = document.createElement("li");
+      li.appendChild(document.createTextNode(elm));
+      ul.appendChild(li);
+    }
+  };
+
+  function selectThemes() {
+    const selected = document.getElementById("selected");
+    if (selected_flag) {
+      const storefield = document.getElementById("stores");
+      const stored = document.createElement("div");
+      stored.setAttribute("class", "storecard");
+      for (const child of selected.children) {
+        stored.appendChild(child);
+      }
+      storefield.insertAdjacentElement("afterbegin", stored);
+    } else {
+      selected_flag = true;
+    }
+    selected.innerHTML = ""; //#selectedの中身を空にする
+    const ol = document.createElement("ol");
+    selected.appendChild(ol);
+    const num = parseInt(document.getElementById("num").value);
+    for (let i = 0; i < num; i++) {
+      let li = document.createElement("li");
+      let ind = getRandomInt(0, themes.length);
+      li.appendChild(document.createTextNode(themes[ind]));
+      ol.appendChild(li);
+    }
+  }
+
+  //min<=n<=maxなランダムな整数nを得るやつ
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  const themes = [
+    "【目の前に、ありえない姿の死体が転がっていた】から始まる小説",
+    "【その指先は、まっすぐに始まりの方へ向けられていた】から始まる小説",
+    "【欠落したものが回復する】",
+    "【そして東の空へとんでいった】で”終わる”小説",
+    "【海辺】",
+    "【一人称によるキャラクターの自己紹介】",
+    "【空が見えない場所】",
+    "【薬】",
+    "【TS】",
+    "【家族】",
+    "【最初と最後を同じ台詞で終わらせる】",
+    "【ロリババア】",
+    "【架空の長編で世界観や設定の説明が粗方おわったタイミングに出すようなエピソード】",
+    "【バイオテックトナカイ】",
+    "【ラグランジュポイント】",
+    "【刀】",
+    "【焼き肉】",
+    "【スタンド】",
+    "【任意の言語】",
+    "【終わりよければすべてよし】",
+    "【かくし芸】",
+    "【犬】",
+    "【現代舞台の怪奇小説】",
+    "【犠牲】",
+    "【著作権フリーの作品から1行引用】",
+    "【任意の作家の文体を真似】",
+    "【千円札】",
+    "【イマジナリーフレンド】",
+    "【慌てない　慌てない】",
+    "【夜勤】",
+    "【銃】",
+    "【病】",
+    "【おにぎり！】",
+    "【ソシャゲ】",
+    "【列車】",
+    "【ヒロインとの遭遇】",
+    "【二度とやりたくない】",
+    "【入れ替わり】",
+    "【踵の高い靴】",
+    "【染み抜き】",
+    "【ここで告白が成功したカップルは永遠に幸せになれる伝説を持つ樹の下で殺し合う男と男】",
+    "【おちる】",
+    "【革命前夜】",
+    "【犯行声明】",
+    "【z】",
+    "【音】",
+    "【ディストピア】",
+    "【次回予告】",
+    "【百合】",
+    "【頭領】",
+    "【かける】",
+    "【レース】",
+    "【ルビ芸】",
+    "【賢者】",
+    "【探しもの】",
+    "【モキュメンタリー】",
+    "【埃を拭う】",
+    "【遠心分離機】",
+    "【市長選挙】",
+    "【走る】",
+    "【運命】",
+    "【前提の崩壊】",
+    "【理想の第一話】",
+    "【聖体パン】",
+    "【ミステリー】"
+  ];
+  </script>
+</head>
+
+<body>
+  <h1>胡乱文芸部お題セレクター</h1>
+  <div id="container_ctrl">
+    <div id="point_num">
+      <label for="num">選択するお題の数：
+        <select name="num" id="num">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </label>
+    </div>
+    <div id="btn">
+      <input type="button" value="クリックでランダムにお題を選択" onclick="selectThemes()">
+    </div>
+  </div>
+  <div id="container_view">
+    <div id="container_hasselect">
+      <div id="main">
+        <h2>選択されたお題：</h2>
+        <div id="selected">
+          <span id="noselected">
+            未選択
+          </span>
+        </div>
+      </div>
+      <div id="stores">
+        <!--出たお題の履歴を表示-->
+      </div>
+    </div>
+    <div id="list">
+      <p class="strong">お題リスト</p>
+      <ul id="themelist">
+      </ul>
+    </div>
+  </div>
+</body>
+
+</html>

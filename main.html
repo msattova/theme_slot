@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お題セレクター</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="./script.js"></script>
+</head>
+<body>
+<h1>お題セレクター</h1>
+<div id="container_ctrl">
+  <div id="point_num">
+    <label for="num">選択するお題の数：
+      <select name="num" id="num">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" selected>3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </label>
+  </div>
+  <div id="btn">
+  <input type="button" value="クリックでランダムにお題を選択" onclick="selectThemes()">
+  </div>
+</div>
+<div id="container_view">
+  <div id="container_hasselect">
+  <div id="main">
+    <h2>選択されたお題：</h2>
+    <div id="selected">
+      <span id="noselected">
+        未選択
+      </span>
+    </div>
+  </div>
+  <div id="stores">
+    <!--出たお題の履歴を表示-->
+  </div>
+  </div>
+  <div id="list">
+    <p class="strong">お題リスト</p>
+    <ul id="themelist">
+    </ul>
+  </div>
+</div>
+</body>
+</html>
